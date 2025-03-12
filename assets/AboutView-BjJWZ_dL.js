@@ -1,0 +1,1 @@
+import{_ as o,c as s,a as t,o as a}from"./index-DL1ViOuT.js";const r={},n={class:"about"};function c(_,e){return a(),s("div",n,e[0]||(e[0]=[t("h1",null,"This is an about page",-1)]))}const i=o(r,[["render",c],["__file","/home/runner/work/ShopMyPham_vue/ShopMyPham_vue/src/views/AboutView.vue"]]);export{i as default};
