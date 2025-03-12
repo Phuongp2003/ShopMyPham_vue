@@ -19,7 +19,9 @@ jobs:
                   node-version: '20'
 
             - name: Install dependencies
-              run: npm install
+              run: |
+                  npm install
+                  echo "NODE_ENV=github" >> $GITHUB_ENV
 
             - name: Build project
               run: npm run build
