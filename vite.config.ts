@@ -8,7 +8,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://vite.dev/config/
 export default defineConfig({
-	base: '/ShopMyPham_vue/',
+	base: process.env.NODE_ENV === 'github' ? '/ShopMyPham_vue/' : '/',
 	plugins: [vue(), vueJsx(), vueDevTools(), tailwindcss()],
 	resolve: {
 		alias: {
