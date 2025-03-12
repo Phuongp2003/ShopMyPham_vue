@@ -1,7 +1,7 @@
 <template>
   <Teleport to="#toasts-box">
-    <div v-if="toast" :id="`toast-container-${toast.id}`" class="bottom-4 right-4 p-6 rounded shadow-lg relative" :class="toastClass(toast.type)" @mouseover="pauseTimer" @mouseleave="resumeTimer">
-      <button @click="closeToast(toast.containerId)" class="absolute top-2 right-2 text-white z-10">✕</button>
+    <div v-if="toast" :id="`${toast.id}`" class="bottom-4 right-4 p-6 rounded shadow-lg relative" :class="toastClass(toast.type)" @mouseover="pauseTimer" @mouseleave="resumeTimer">
+      <button @click="closeToast(toast, toast.containerId)" class="absolute top-2 right-2 text-white z-10">✕</button>
       {{ toast.message }}
       <div class="h-1 bg-gray-600 bottom-[1px] left-0 absolute w-full">
         <div :style="{ width: toast.progress + '%' }" class="h-full bg-white"></div>

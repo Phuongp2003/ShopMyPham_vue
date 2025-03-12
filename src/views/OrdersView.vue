@@ -1,14 +1,14 @@
 <template>
   <div class="p-4">
-    <h1 class="text-2xl font-bold mb-4">Đơn hàng của bạn</h1>
+    <h1 id="page-title" class="text-2xl font-bold mb-4">Đơn hàng của bạn</h1>
     <div class="flex justify-start mb-4">
-      <button @click="filterOrders('all')" :class="buttonClass('all')" class="px-4 py-2 rounded hover:bg-pink-300">Tất cả</button>
-      <button @click="filterOrders('pending')" :class="buttonClass('pending')" class="px-4 py-2 rounded hover:bg-pink-300">Chờ giao hàng</button>
-      <button @click="filterOrders('completed')" :class="buttonClass('completed')" class="px-4 py-2 rounded hover:bg-pink-300">Hoàn thành</button>
-      <button @click="filterOrders('cancelled')" :class="buttonClass('cancelled')" class="px-4 py-2 rounded hover:bg-pink-300">Đã hủy</button>
+      <button id="filter-all" @click="filterOrders('all')" :class="buttonClass('all')" class="px-4 py-2 rounded hover:bg-pink-300">Tất cả</button>
+      <button id="filter-pending" @click="filterOrders('pending')" :class="buttonClass('pending')" class="px-4 py-2 rounded hover:bg-pink-300">Chờ giao hàng</button>
+      <button id="filter-completed" @click="filterOrders('completed')" :class="buttonClass('completed')" class="px-4 py-2 rounded hover:bg-pink-300">Hoàn thành</button>
+      <button id="filter-cancelled" @click="filterOrders('cancelled')" :class="buttonClass('cancelled')" class="px-4 py-2 rounded hover:bg-pink-300">Đã hủy</button>
     </div>
     <div v-for="order in filteredOrders" :key="order.id" class="mb-4 p-4 bg-gray-100 rounded shadow">
-      <div v-for="product in getProductDetails(order.productIds)" :key="product.id" class="flex mb-2 justify-between">
+      <div v-for="product in getProductDetails(order.productIds)" :key="product.id" class="flex mb-2 justify-between product-review">
         <div class="flex">
           <img :src="`/images/${product.image}`" alt="product.name" class="w-16 h-16 mr-4"/>
           <div>
@@ -40,10 +40,10 @@
         <p class="font-bold">Thành tiền: {{ formatCurrency(order.total) }}</p>
       </div>
       <div v-if="order.status === 'completed' && !order.reviewed" class="mt-4">
-        <RouterLink :to="{ name: 'review', params: { orderId: order.id } }" class="w-full bg-orange-500 text-white py-2 rounded text-center block hover:bg-orange-600">Đánh giá</RouterLink>
+        <RouterLink :to="{ name: 'review', params: { orderId: order.id } }" id="review-order" class="w-full bg-orange-500 text-white py-2 rounded text-center block hover:bg-orange-600">Đánh giá</RouterLink>
       </div>
       <div v-else-if="order.status === 'completed' && order.reviewed" class="mt-4">
-        <RouterLink :to="{ name: 'review', params: { orderId: order.id } }" class="w-full bg-blue-500 text-white py-2 rounded text-center block hover:bg-blue-600">Sửa/Xóa đánh giá</RouterLink>
+        <RouterLink :to="{ name: 'review', params: { orderId: order.id } }" id="edit-review-order" class="w-full bg-blue-500 text-white py-2 rounded text-center block hover:bg-blue-600">Sửa/Xóa đánh giá</RouterLink>
       </div>
     </div>
     <ToastContainer />
@@ -62,8 +62,8 @@ const allReviews = ref({});
 
 onMounted(async () => {
   const response = await fetch(
-					`/data/sample.json`
-				);
+    `/data/sample.json`
+  );
   const sampleData = await response.json();
   orders.value = sampleData.orders.filter(order => order.userId === 3);
   products.value = sampleData.products;

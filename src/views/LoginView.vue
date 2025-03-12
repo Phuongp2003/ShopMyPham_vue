@@ -6,15 +6,15 @@
         <div>
           <label for="username" class="block mb-2">Tên đăng nhập</label>
           <input type="text" v-model="username" id="username" required class="w-full p-2 border rounded" />
-          <p v-if="usernameError" class="text-red-500">{{ usernameError }}</p>
+          <p v-if="usernameError" id="username-error" class="text-red-500">{{ usernameError }}</p>
         </div>
         <div>
           <label for="password" class="block mb-2">Mật khẩu</label>
           <input type="password" v-model="password" id="password" required class="w-full p-2 border rounded" />
-          <p v-if="passwordError" class="text-red-500">{{ passwordError }}</p>
+          <p v-if="passwordError" id="password-error" class="text-red-500">{{ passwordError }}</p>
         </div>
-        <button type="submit" class="w-full bg-blue-200 p-2 rounded hover:bg-blue-300">Đăng nhập</button>
-        <p v-if="loginError" class="text-red-500 text-center">{{ loginError }}</p>
+        <button type="submit" id="login-button" class="w-full bg-blue-200 p-2 rounded hover:bg-blue-300">Đăng nhập</button>
+        <p v-if="loginError" id="login-error" class="text-red-500 text-center">{{ loginError }}</p>
       </form>
     </div>
   </div>

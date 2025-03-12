@@ -4,16 +4,9 @@ import ToastContainer from './ToastContainer.vue';
 import { useIntervalFn } from '@vueuse/core';
 
 export const useToastStore = defineStore('toast', () => {
-	const formatCurrency = (amount: number): string => {
-		return amount.toLocaleString('vi-VN', {
-			style: 'currency',
-			currency: 'VND',
-		});
-	};
-
-	const showToast = (message: string, type: string = 'info') => {
+	const showToast = (message: string, type: string = 'info', id?: string) => {
 		const toast = ref<{
-			id: number;
+			id: string;
 			message: string;
 			type: string;
 			progress: number;
@@ -21,12 +14,11 @@ export const useToastStore = defineStore('toast', () => {
 			containerId: string;
 		} | null>(null);
 
-		const id = Date.now();
-		const containerId = `toast-container-${id}`;
-		const formattedMessage = formatCurrency(parseFloat(message));
+		const toastId = id || `toast-container-${Date.now().toString()}`;
+		const containerId = toastId;
 		toast.value = {
-			id,
-			message: formattedMessage,
+			id: toastId,
+			message,
 			type,
 			progress: 100,
 			paused: false,
@@ -53,33 +45,14 @@ export const useToastStore = defineStore('toast', () => {
 	};
 
 	const closeToast = (
-		toast: Ref<
-			{
-				id: number;
-				message: string;
-				type: string;
-				progress: number;
-				paused: boolean;
-				containerId: string;
-			} | null,
-			| {
-					id: number;
-					message: string;
-					type: string;
-					progress: number;
-					paused: boolean;
-					containerId: string;
-			  }
-			| {
-					id: number;
-					message: string;
-					type: string;
-					progress: number;
-					paused: boolean;
-					containerId: string;
-			  }
-			| null
-		>,
+		toast: Ref<{
+			id: string;
+			message: string;
+			type: string;
+			progress: number;
+			paused: boolean;
+			containerId: string;
+		} | null>,
 		containerId: string
 	) => {
 		toast.value = null;

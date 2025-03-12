@@ -1,7 +1,7 @@
 <template>
   <div class="p-4">
     <h1 class="text-2xl font-bold mb-4">Đánh giá sản phẩm</h1>
-    <div v-for="product in orderProducts" :key="product.id" class="mb-4 p-4 bg-gray-100 rounded shadow">
+    <div v-for="product in orderProducts" :key="product.id" class="mb-4 p-4 bg-gray-100 rounded shadow product-review">
       <div class="flex mb-2">
         <img :src="`/images/${product.image}`" alt="product.name" class="w-16 h-16 mr-4"/>
         <div>
@@ -12,7 +12,7 @@
       <div v-if="product.reviewed" class="grid grid-cols-2 gap-4">
         <div>
           <div class="flex mb-2">
-            <StartIcon v-for="star in 5" :key="star" :class="{'text-yellow-500': star <= product.rating, 'text-gray-300': star > product.rating}" class="w-6 h-6"/>
+            <StartIcon v-for="(star, index) in 5" :key="star" :class="{'text-yellow-500': star <= product.rating, 'text-gray-300': star > product.rating, [`star-${index+1}`]: true}" class="w-6 h-6"/>
           </div>
           <p class="mb-2">Nhận xét: {{ product.comment }}</p>
           <p class="mb-2">Thời gian đánh giá: {{ product.reviewTime }}</p>
@@ -26,31 +26,31 @@
           </div>
         </div>
         <div class="flex justify-between col-span-2">
-          <button @click="editReview(product)" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Sửa</button>
+          <button :id="'edit-review-' + product.id" @click="editReview(product)" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Sửa</button>
         </div>
       </div>
       <div v-else>
         <div class="mb-2">
           <label for="rating" class="block mb-1">Chọn số sao:</label>
           <div class="flex">
-            <StartIcon v-for="star in 5" :key="star" :class="{'text-yellow-500': star <= product.rating, 'text-gray-300': star > product.rating}" class="w-6 h-6 cursor-pointer" @click="product.rating = star"/>
+            <StartIcon v-for="(star, index) in 5" :key="star" :class="{'text-yellow-500': star <= product.rating, 'text-gray-300': star > product.rating, [`star-${index+1}`]: true}" class="w-6 h-6 cursor-pointer" @click="product.rating = star"/>
           </div>
-          <p v-if="product.ratingError" class="text-red-500">{{ product.ratingError }}</p>
+          <p v-if="product.ratingError" id="rating-error" class="text-red-500">{{ product.ratingError }}</p>
         </div>
         <div class="mb-2">
           <label for="comment" class="block mb-1">Nhận xét:</label>
-          <textarea id="comment" v-model="product.comment" class="w-full p-2 border rounded"></textarea>
+          <textarea id="review-comment" v-model="product.comment" class="w-full p-2 border rounded"></textarea>
         </div>
         <div class="mb-2">
           <label for="images" class="block mb-1">Hình ảnh:</label>
-          <input type="file" id="images" multiple @change="handleImageUpload($event, product)" class="w-full p-2 border rounded"/>
+          <input type="file" id="review-images" multiple @change="handleImageUpload($event, product)" class="w-full p-2 border rounded"/>
         </div>
       </div>
     </div>
     <div class="flex justify-between">
-      <RouterLink to="/orders" class="bg-gray-300 text-black py-2 px-4 rounded hover:bg-gray-400">Trở lại</RouterLink>
-      <button @click="submitReview" class="bg-pink-500 text-white py-2 px-4 rounded hover:bg-pink-600">Gửi</button>
-      <button v-if="orderProducts.some(product => product.reviewed)" @click="deleteReview" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Xóa đánh giá</button>
+      <RouterLink to="/orders" id="back-to-orders" class="bg-gray-300 text-black py-2 px-4 rounded hover:bg-gray-400">Trở lại</RouterLink>
+      <button id="submit-review" @click="submitReview" class="bg-pink-500 text-white py-2 px-4 rounded hover:bg-pink-600">Gửi</button>
+      <button v-if="orderProducts.some(product => product.reviewed)" id="delete-review" @click="deleteReview" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Xóa đánh giá</button>
     </div>
   </div>
 </template>
@@ -72,8 +72,8 @@ const toastStore = useToastStore();
 
 onMounted(async () => {
   const response = await fetch(
-					`/data/sample.json`
-				);
+    `/data/sample.json`
+  );
   const sampleData = await response.json();
   order.value = sampleData.orders.find(order => order.id === parseInt(orderId));
   products.value = sampleData.products;
@@ -147,7 +147,7 @@ const submitReview = () => {
       product.reviewTime = new Date().toLocaleString();
     }
   });
-  toastStore.showToast('Đánh giá của bạn đã được gửi', 'success');
+  toastStore.showToast('Đánh giá của bạn đã được gửi', 'success', 'toast-container-review-success');
   router.push('/orders');
 };
 
@@ -158,7 +158,7 @@ const editReview = (product) => {
 const deleteReview = () => {
   delete allReviews.value[orderId];
   sessionStorage.setItem('reviews', JSON.stringify(allReviews.value));
-  toastStore.showToast('Đánh giá của bạn đã được xóa', 'success');
+  toastStore.showToast('Đánh giá của bạn đã được xóa', 'success', 'toast-container-review-delete-success');
   router.push('/orders');
 };
 </script>
