@@ -20,7 +20,9 @@ import ProductComponent from './ProductComponent.vue';
 const products = ref([]);
 
 onMounted(async () => {
-  const response = await fetch(`${process.env.VITE_URL}/data/sample.json`);
+  const response = await fetch(
+					`${import.meta.env.VITE_URL}/data/sample.json`
+				);
   const sampleData = await response.json();
   products.value = sampleData.products;
 });

@@ -16,7 +16,7 @@ export const useAuthStore = defineStore('auth', {
 		async login(username: string, password: string) {
 			try {
 				const response = await fetch(
-					`${process.env.VITE_URL}/data/sample.json`
+					`${import.meta.env.VITE_URL}/data/sample.json`
 				);
 				const sampleData = await response.json();
 

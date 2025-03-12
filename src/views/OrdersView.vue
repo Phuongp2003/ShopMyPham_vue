@@ -61,7 +61,9 @@ const filter = ref('all');
 const allReviews = ref({});
 
 onMounted(async () => {
-  const response = await fetch(`${process.env.VITE_URL}/data/sample.json`);
+  const response = await fetch(
+					`${import.meta.env.VITE_URL}/data/sample.json`
+				);
   const sampleData = await response.json();
   orders.value = sampleData.orders.filter(order => order.userId === 3);
   products.value = sampleData.products;
