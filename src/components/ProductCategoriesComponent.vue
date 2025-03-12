@@ -21,7 +21,7 @@ const products = ref([]);
 
 onMounted(async () => {
   const response = await fetch(
-					`${import.meta.env.VITE_URL}/data/sample.json`
+					`/data/sample.json`
 				);
   const sampleData = await response.json();
   products.value = sampleData.products;
