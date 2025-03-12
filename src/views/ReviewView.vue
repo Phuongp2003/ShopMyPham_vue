@@ -71,7 +71,7 @@ const allReviews = ref({});
 const toastStore = useToastStore();
 
 onMounted(async () => {
-  const response = await fetch('/data/sample.json');
+  const response = await fetch(`${process.env.VITE_URL}/data/sample.json`);
   const sampleData = await response.json();
   order.value = sampleData.orders.find(order => order.id === parseInt(orderId));
   products.value = sampleData.products;

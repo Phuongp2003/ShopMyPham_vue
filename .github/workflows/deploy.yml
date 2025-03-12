@@ -22,7 +22,7 @@ jobs:
               run: |
                   npm install
                   echo "NODE_ENV=github" >> $GITHUB_ENV
-
+                  echo "VITE_URL=https://phuongp2003.github.io/ShopMyPham_vue" >> $GITHUB_ENV
             - name: Build project
               run: npm run build
 
